@@ -1,0 +1,38 @@
+<section class="projects-section">
+  <h2>My Projects</h2>
+  <p class="section-description">
+    Here are some of the projects I've built using modern Angular features.
+    Each project showcases different aspects of Angular development.
+  </p>
+  
+  <div class="projects-grid">
+    <!-- Using NEW @for syntax (Angular 17+) -->
+    @for (project of projects; track project.id) {
+      <div class="project-card">
+        <h3>{{ project.title }}</h3>
+        <p class="description">{{ project.description }}</p>
+        
+        <div class="technologies">
+          <strong>Technologies:</strong>
+          @for (tech of project.technologies; track tech) {
+            <span class="tech-badge">{{ tech }}</span>
+          }
+        </div>
+        
+        <div class="project-links">
+          <!-- Using NEW @if syntax (Angular 17+) -->
+          @if (project.githubLink) {
+            <a [href]="project.githubLink" target="_blank" class="btn">
+              <span>📁</span> GitHub
+            </a>
+          }
+          @if (project.liveLink) {
+            <a [href]="project.liveLink" target="_blank" class="btn btn-primary">
+              <span>🚀</span> Live Demo
+            </a>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</section>

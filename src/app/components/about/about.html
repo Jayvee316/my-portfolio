@@ -1,0 +1,33 @@
+<section class="about-section">
+  <div class="about-content">
+    <h2>About Me</h2>
+    
+    <!-- Using Signals (Modern Angular) -->
+    <h1>Hi, I'm {{ name() }}</h1>
+    <h3>{{ title() }}</h3>
+    <p class="experience">{{ experience() }} of experience building web applications</p>
+    
+    <div class="bio">
+      <p>
+        I'm a passionate Angular developer with experience in building 
+        modern, scalable web applications. I specialize in creating 
+        responsive, user-friendly interfaces using the latest Angular features.
+      </p>
+      <p>
+        I've successfully migrated projects from Angular 12 to the latest versions,
+        implementing modern patterns like standalone components, signals, and 
+        the new control flow syntax.
+      </p>
+    </div>
+    
+    <!-- Using NEW control flow syntax (@for) -->
+    <div class="expertise">
+      <h3>Expertise:</h3>
+      <ul>
+        @for (skill of expertise; track skill) {
+          <li>{{ skill }}</li>
+        }
+      </ul>
+    </div>
+  </div>
+</section>
