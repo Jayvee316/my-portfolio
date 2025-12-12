@@ -8,4 +8,9 @@
   <footer class="footer">
     <p>&copy; 2024 Your Name. All rights reserved.</p>
   </footer>
+  
+  <!-- Show spinner when loading -->
+  @if (loadingService.isLoading()) {
+    <app-loading-spinner></app-loading-spinner>
+  }
 </div>

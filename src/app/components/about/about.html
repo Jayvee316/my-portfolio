@@ -2,8 +2,7 @@
   <div class="about-content">
     <h2>About Me</h2>
     
-    <!-- Using Signals (Modern Angular) -->
-    <h1>Hi, I'm JAYVEE</h1>
+    <h1>Hi, I'm {{ name() }}</h1>
     <h3>{{ title() }}</h3>
     <p class="experience">{{ experience() }} of experience building web applications</p>
     
@@ -20,7 +19,13 @@
       </p>
     </div>
     
-    <!-- Using NEW control flow syntax (@for) -->
+    <!-- Test Button -->
+    <div style="text-align: center; margin: 2rem 0;">
+      <button class="btn-test" (click)="testLoading()">
+        🔄 Test Loading Spinner (3 seconds)
+      </button>
+    </div>
+    
     <div class="expertise">
       <h3>Expertise:</h3>
       <ul>

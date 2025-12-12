@@ -1,4 +1,5 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-about',
@@ -7,12 +8,12 @@ import { Component, signal } from '@angular/core';
   styleUrl: './about.scss'
 })
 export class About {
-  // Using Signals (NEW in Angular 16+)
+  loadingService = inject(LoadingService);
+  
   name = signal('Your Name');
   title = signal('Angular Developer');
   experience = signal('3+ years');
   
-  // Array of expertise
   expertise = [
     'Angular 12 to 19',
     'TypeScript',
@@ -23,4 +24,10 @@ export class About {
     'Signals',
     'Modern Control Flow'
   ];
+  
+  // Test loading spinner
+  async testLoading() {
+    await this.loadingService.simulateLoading(3000);
+    alert('Loading complete!');
+  }
 }
