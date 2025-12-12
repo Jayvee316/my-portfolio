@@ -2,37 +2,68 @@
   <h2>My Projects</h2>
   <p class="section-description">
     Here are some of the projects I've built using modern Angular features.
-    Each project showcases different aspects of Angular development.
   </p>
   
-  <div class="projects-grid">
-    <!-- Using NEW @for syntax (Angular 17+) -->
-    @for (project of projects; track project.id) {
-      <div class="project-card">
-        <h3>{{ project.title }}</h3>
-        <p class="description">{{ project.description }}</p>
-        
-        <div class="technologies">
-          <strong>Technologies:</strong>
-          @for (tech of project.technologies; track tech) {
-            <span class="tech-badge">{{ tech }}</span>
-          }
-        </div>
-        
-        <div class="project-links">
-          <!-- Using NEW @if syntax (Angular 17+) -->
-          @if (project.githubLink) {
-            <a [href]="project.githubLink" target="_blank" class="btn">
-              <span>📁</span> GitHub
-            </a>
-          }
-          @if (project.liveLink) {
-            <a [href]="project.liveLink" target="_blank" class="btn btn-primary">
-              <span>🚀</span> Live Demo
-            </a>
-          }
-        </div>
-      </div>
+  <!-- Search Box -->
+  <div class="search-container">
+    <input 
+      type="text" 
+      class="search-input"
+      placeholder="Search projects by name, description, or technology..."
+      [(ngModel)]="searchTerm"
+      [value]="searchTerm()">
+    
+    <!-- Clear button - only show if there's text -->
+    @if (searchTerm()) {
+      <button class="clear-btn" (click)="clearSearch()">
+        ✕
+      </button>
     }
   </div>
+  
+  <!-- Results count -->
+  <p class="results-info">
+    Showing {{ filteredProjects().length }} of {{ allProjects.length }} projects
+  </p>
+  
+  <!-- Projects Grid -->
+  @if (filteredProjects().length > 0) {
+    <div class="projects-grid">
+      @for (project of filteredProjects(); track project.id) {
+        <div class="project-card">
+          <h3>{{ project.title }}</h3>
+          <p class="description">{{ project.description }}</p>
+          
+          <div class="technologies">
+            <strong>Technologies:</strong>
+            @for (tech of project.technologies; track tech) {
+              <span class="tech-badge">{{ tech }}</span>
+            }
+          </div>
+          
+          <div class="project-links">
+            @if (project.githubLink) {
+              <a [href]="project.githubLink" target="_blank" class="btn">
+                <span>📁</span> GitHub
+              </a>
+            }
+            @if (project.liveLink) {
+              <a [href]="project.liveLink" target="_blank" class="btn btn-primary">
+                <span>🚀</span> Live Demo
+              </a>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <!-- No results message -->
+    <div class="no-results">
+      <h3>No projects found</h3>
+      <p>Try searching for "Angular", "Firebase", or "Dashboard"</p>
+      <button class="btn btn-primary" (click)="clearSearch()">
+        Clear Search
+      </button>
+    </div>
+  }
 </section>

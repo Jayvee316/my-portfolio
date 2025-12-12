@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, signal, computed } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 interface Project {
   id: number;
@@ -11,12 +12,16 @@ interface Project {
 
 @Component({
   selector: 'app-projects',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './projects.html',
   styleUrl: './projects.scss'
 })
 export class Projects {
-  projects: Project[] = [
+  // Signal for search term
+  searchTerm = signal('');
+  
+  // All projects
+  allProjects: Project[] = [
     {
       id: 1,
       title: 'E-commerce Dashboard',
@@ -39,6 +44,34 @@ export class Projects {
       technologies: ['Angular 18', 'OpenWeather API', 'RxJS', 'SCSS'],
       githubLink: 'https://github.com/yourusername/project3',
       liveLink: 'https://project3-demo.com'
+    },
+    {
+      id: 4,
+      title: 'Blog Platform',
+      description: 'Modern blogging platform with markdown support and comment system. Features include user authentication and post management.',
+      technologies: ['Angular 19', 'Firebase', 'Markdown', 'Tailwind'],
+      githubLink: 'https://github.com/yourusername/project4'
     }
   ];
+  
+  // Computed signal - automatically updates when searchTerm changes
+  filteredProjects = computed(() => {
+    const term = this.searchTerm().toLowerCase().trim();
+    
+    if (!term) {
+      return this.allProjects; // Show all if no search
+    }
+    
+    // Filter by title, description, or technologies
+    return this.allProjects.filter(project => 
+      project.title.toLowerCase().includes(term) ||
+      project.description.toLowerCase().includes(term) ||
+      project.technologies.some(tech => tech.toLowerCase().includes(term))
+    );
+  });
+  
+  // Clear search
+  clearSearch() {
+    this.searchTerm.set('');
+  }
 }
