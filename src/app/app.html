@@ -9,8 +9,10 @@
     <p>&copy; 2024 Your Name. All rights reserved.</p>
   </footer>
   
-  <!-- Show spinner when loading -->
   @if (loadingService.isLoading()) {
     <app-loading-spinner></app-loading-spinner>
   }
+  
+  <!-- Back to Top Button -->
+  <app-back-to-top></app-back-to-top>
 </div>
