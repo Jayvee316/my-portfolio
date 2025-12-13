@@ -4,7 +4,8 @@
     I'm always open to discussing new projects, opportunities, or collaborations.
   </p>
   
-  <div class="contact-content">
+  <div class="contact-grid">
+    <!-- Contact Info Column -->
     <div class="contact-info">
       <div class="contact-item">
         <h3>📧 Email</h3>
@@ -20,14 +21,135 @@
         <h3>🔗 LinkedIn</h3>
         <a [href]="linkedin()" target="_blank">{{ linkedin() }}</a>
       </div>
+      
+      <div class="cta-box">
+        <h3>Let's Work Together</h3>
+        <p>
+          Whether you have a project in mind or just want to chat about Angular,
+          feel free to reach out!
+        </p>
+      </div>
     </div>
     
-    <div class="cta-box">
-      <h3>Let's Work Together</h3>
-      <p>
-        Whether you have a project in mind or just want to chat about Angular,
-        feel free to reach out!
-      </p>
+    <!-- Contact Form Column -->
+    <div class="contact-form-container">
+      <!-- Success Message -->
+      @if (successMessage()) {
+        <div class="success-alert">
+          <span class="success-icon">✓</span>
+          <p>{{ successMessage() }}</p>
+        </div>
+      }
+      
+      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
+        <!-- Name Field -->
+        <div class="form-group">
+          <label for="name">Name *</label>
+          <input 
+            type="text" 
+            id="name"
+            formControlName="name"
+            placeholder="Your full name"
+            [class.error]="submitted() && nameControl.invalid">
+          
+          <!-- Validation Messages -->
+          @if (submitted() && nameControl.invalid) {
+            <div class="error-message">
+              @if (nameControl.errors?.['required']) {
+                <span>Name is required</span>
+              }
+              @if (nameControl.errors?.['minlength']) {
+                <span>Name must be at least 2 characters</span>
+              }
+            </div>
+          }
+        </div>
+        
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="email">Email *</label>
+          <input 
+            type="email" 
+            id="email"
+            formControlName="email"
+            placeholder="your.email@example.com"
+            [class.error]="submitted() && emailControl.invalid">
+          
+          @if (submitted() && emailControl.invalid) {
+            <div class="error-message">
+              @if (emailControl.errors?.['required']) {
+                <span>Email is required</span>
+              }
+              @if (emailControl.errors?.['email']) {
+                <span>Please enter a valid email</span>
+              }
+            </div>
+          }
+        </div>
+        
+        <!-- Subject Field -->
+        <div class="form-group">
+          <label for="subject">Subject *</label>
+          <input 
+            type="text" 
+            id="subject"
+            formControlName="subject"
+            placeholder="What's this about?"
+            [class.error]="submitted() && subjectControl.invalid">
+          
+          @if (submitted() && subjectControl.invalid) {
+            <div class="error-message">
+              @if (subjectControl.errors?.['required']) {
+                <span>Subject is required</span>
+              }
+              @if (subjectControl.errors?.['minlength']) {
+                <span>Subject must be at least 5 characters</span>
+              }
+            </div>
+          }
+        </div>
+        
+        <!-- Message Field -->
+        <div class="form-group">
+          <label for="message">Message *</label>
+          <textarea 
+            id="message"
+            formControlName="message"
+            rows="5"
+            placeholder="Your message here... (10-500 characters)"
+            [class.error]="submitted() && messageControl.invalid"></textarea>
+          
+          <div class="char-count">
+            {{ messageControl.value?.length || 0 }} / 500
+          </div>
+          
+          @if (submitted() && messageControl.invalid) {
+            <div class="error-message">
+              @if (messageControl.errors?.['required']) {
+                <span>Message is required</span>
+              }
+              @if (messageControl.errors?.['minlength']) {
+                <span>Message must be at least 10 characters</span>
+              }
+              @if (messageControl.errors?.['maxlength']) {
+                <span>Message cannot exceed 500 characters</span>
+              }
+            </div>
+          }
+        </div>
+        
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          class="submit-btn"
+          [disabled]="loadingService.isLoading()">
+          @if (loadingService.isLoading()) {
+            <span>Sending...</span>
+          } @else {
+            <span>Send Message</span>
+          }
+        </button>
+      </form>
     </div>
   </div>
 </section>
