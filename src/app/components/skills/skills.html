@@ -1,18 +1,32 @@
 <section class="skills-section">
   <h2>Skills & Technologies</h2>
   <p class="section-description">
-    Technologies and tools I work with regularly.
+    My proficiency levels with various technologies and tools.
   </p>
   
-  <div class="skills-grid">
+  <div class="skills-container">
     @for (category of skillCategories; track category.category) {
       <div class="skill-category">
         <h3>{{ category.category }}</h3>
-        <ul>
-          @for (skill of category.skills; track skill) {
-            <li>{{ skill }}</li>
+        
+        <div class="skills-list">
+          @for (skill of category.skills; track skill.name) {
+            <div class="skill-item">
+              <div class="skill-header">
+                <span class="skill-name">{{ skill.name }}</span>
+                <span class="skill-percentage">{{ skill.level }}%</span>
+              </div>
+              
+              <div class="progress-bar-container">
+                <div 
+                  class="progress-bar"
+                  [style.width.%]="showProgress() ? skill.level : 0"
+                  [style.background-color]="skill.color">
+                </div>
+              </div>
+            </div>
           }
-        </ul>
+        </div>
       </div>
     }
   </div>

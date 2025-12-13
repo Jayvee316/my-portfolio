@@ -1,8 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, signal, effect } from '@angular/core';
+
+interface Skill {
+  name: string;
+  level: number; // 0-100
+  color: string;
+}
 
 interface SkillCategory {
   category: string;
-  skills: string[];
+  skills: Skill[];
 }
 
 @Component({
@@ -12,22 +18,47 @@ interface SkillCategory {
   styleUrl: './skills.scss'
 })
 export class Skills {
+  // Signal to trigger animations
+  showProgress = signal(false);
+  
   skillCategories: SkillCategory[] = [
     {
       category: 'Frontend',
-      skills: ['Angular 12-19', 'TypeScript', 'JavaScript', 'HTML5', 'CSS3/SCSS', 'Responsive Design']
+      skills: [
+        { name: 'Angular', level: 90, color: '#dd0031' },
+        { name: 'TypeScript', level: 85, color: '#3178c6' },
+        { name: 'JavaScript', level: 80, color: '#f7df1e' },
+        { name: 'HTML/CSS', level: 95, color: '#e34c26' },
+        { name: 'SCSS/Sass', level: 85, color: '#cc6699' }
+      ]
     },
     {
-      category: 'Angular Specific',
-      skills: ['Standalone Components', 'Signals', 'RxJS', 'NgRx', 'Angular Material', 'Reactive Forms']
+      category: 'Angular Ecosystem',
+      skills: [
+        { name: 'RxJS', level: 75, color: '#b7178c' },
+        { name: 'NgRx', level: 70, color: '#412846' },
+        { name: 'Angular Material', level: 80, color: '#3f51b5' },
+        { name: 'Signals', level: 85, color: '#dd0031' },
+        { name: 'Standalone Components', level: 90, color: '#dd0031' }
+      ]
     },
     {
-      category: 'Backend & APIs',
-      skills: ['RESTful APIs', 'Node.js', 'Express', 'Firebase', 'GraphQL']
-    },
-    {
-      category: 'Tools & Others',
-      skills: ['Git/GitHub', 'VS Code', 'npm/yarn', 'Webpack', 'Jest', 'Jasmine']
+      category: 'Backend & Tools',
+      skills: [
+        { name: 'Node.js', level: 70, color: '#339933' },
+        { name: 'Firebase', level: 75, color: '#ffca28' },
+        { name: 'Git/GitHub', level: 85, color: '#f05032' },
+        { name: 'REST APIs', level: 80, color: '#61dafb' }
+      ]
     }
   ];
+  
+  constructor() {
+    // Trigger animation after component loads
+    effect(() => {
+      setTimeout(() => {
+        this.showProgress.set(true);
+      }, 300);
+    });
+  }
 }
