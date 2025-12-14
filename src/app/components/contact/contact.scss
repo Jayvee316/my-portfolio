@@ -213,3 +213,21 @@ textarea {
     opacity: 0.7;
   }
 }
+
+.error-alert {
+  background: #fee;
+  color: #c33;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #e74c3c;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  animation: slideIn 0.3s ease-out;
+}
+
+.error-icon {
+  font-size: 1.5rem;
+  font-weight: bold;
+}

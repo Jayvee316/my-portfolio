@@ -1,0 +1,133 @@
+.blog-section {
+  padding: 2rem 0;
+}
+
+h2 {
+  color: var(--text-color);
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.section-description {
+  color: #7f8c8d;
+  margin-bottom: 2rem;
+}
+
+.error-alert {
+  background: #fee;
+  color: #c33;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #e74c3c;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  
+  span {
+    font-size: 1.5rem;
+  }
+  
+  p {
+    flex: 1;
+    margin: 0;
+  }
+}
+
+.btn-retry {
+  padding: 0.5rem 1rem;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  
+  &:hover {
+    background: #c0392b;
+  }
+}
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.post-card {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px var(--shadow);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px var(--shadow);
+  }
+  
+  h3 {
+    color: var(--text-color);
+    margin: 0 0 1rem 0;
+    text-transform: capitalize;
+  }
+  
+  .post-preview {
+    color: #7f8c8d;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  
+  .btn-read {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+    
+    &:hover {
+      background: #2980b9;
+    }
+  }
+}
+
+.post-detail {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px var(--shadow);
+  
+  .btn-back {
+    background: #95a5a6;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 2rem;
+    
+    &:hover {
+      background: #7f8c8d;
+    }
+  }
+  
+  h2 {
+    text-transform: capitalize;
+    margin-bottom: 1.5rem;
+  }
+  
+  .post-body {
+    line-height: 1.8;
+    color: var(--text-color);
+    margin-bottom: 2rem;
+  }
+  
+  .post-meta {
+    display: flex;
+    gap: 2rem;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+  }
+}

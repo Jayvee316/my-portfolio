@@ -1,0 +1,41 @@
+<section class="blog-section">
+  <h2>Blog Posts (Real API Data)</h2>
+  <p class="section-description">
+    Displaying real data from JSONPlaceholder API
+  </p>
+  
+  <!-- Error Message -->
+  @if (error()) {
+    <div class="error-alert">
+      <span>⚠️</span>
+      <p>{{ error() }}</p>
+      <button class="btn-retry" (click)="loadPosts()">Retry</button>
+    </div>
+  }
+  
+  <!-- Posts Grid -->
+  @if (posts().length > 0 && !selectedPost()) {
+    <div class="posts-grid">
+      @for (post of posts(); track post.id) {
+        <div class="post-card" (click)="viewPost(post)">
+          <h3>{{ post.title }}</h3>
+          <p class="post-preview">{{ post.body.substring(0, 100) }}...</p>
+          <button class="btn-read">Read More →</button>
+        </div>
+      }
+    </div>
+  }
+  
+  <!-- Selected Post Detail -->
+  @if (selectedPost()) {
+    <div class="post-detail">
+      <button class="btn-back" (click)="closePost()">← Back to Posts</button>
+      <h2>{{ selectedPost()!.title }}</h2>
+      <p class="post-body">{{ selectedPost()!.body }}</p>
+      <div class="post-meta">
+        <span>Post ID: {{ selectedPost()!.id }}</span>
+        <span>User ID: {{ selectedPost()!.userId }}</span>
+      </div>
+    </div>
+  }
+</section>

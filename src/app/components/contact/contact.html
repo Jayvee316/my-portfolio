@@ -7,32 +7,19 @@
   <div class="contact-grid">
     <!-- Contact Info Column -->
     <div class="contact-info">
-      <div class="contact-item">
-        <h3>📧 Email</h3>
-        <a [href]="'mailto:' + email()">{{ email() }}</a>
-      </div>
-      
-      <div class="contact-item">
-        <h3>💼 GitHub</h3>
-        <a [href]="github()" target="_blank">{{ github() }}</a>
-      </div>
-      
-      <div class="contact-item">
-        <h3>🔗 LinkedIn</h3>
-        <a [href]="linkedin()" target="_blank">{{ linkedin() }}</a>
-      </div>
-      
-      <div class="cta-box">
-        <h3>Let's Work Together</h3>
-        <p>
-          Whether you have a project in mind or just want to chat about Angular,
-          feel free to reach out!
-        </p>
-      </div>
+      <!-- ... existing contact items ... -->
     </div>
     
     <!-- Contact Form Column -->
     <div class="contact-form-container">
+      <!-- Error Message -->
+      @if (errorMessage()) {
+        <div class="error-alert">
+          <span class="error-icon">✕</span>
+          <p>{{ errorMessage() }}</p>
+        </div>
+      }
+      
       <!-- Success Message -->
       @if (successMessage()) {
         <div class="success-alert">
@@ -41,6 +28,7 @@
         </div>
       }
       
+      <!-- Rest of form... -->
       <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" class="contact-form">
         <!-- Name Field -->
         <div class="form-group">
