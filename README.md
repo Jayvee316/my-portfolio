@@ -58,25 +58,4 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
 
-# Environment Setup
-
-## For New Developers
-
-1. Copy the template file:
-```bash
-   cp environment.template.ts environment.ts
-   cp environment.template.ts environment.production.ts
-```
-
-2. Edit `environment.ts` and `environment.production.ts` with your real API keys:
-   - **EmailJS**: Get from https://dashboard.emailjs.com
-   - **GitHub Token**: Get from https://github.com/settings/tokens (optional)
-   - **OpenWeather**: Get from https://openweathermap.org/api
-
-3. Never commit the real environment files - they're in .gitignore!
-
-## API Key Sources
-
-- **EmailJS**: Dashboard → Email Services (Service ID), Email Templates (Template ID), Account (Public Key)
-- **GitHub**: Settings → Developer settings → Personal access tokens (optional, for higher rate limits)
-- **OpenWeather**: Sign up → API keys section
+JUST TESTING
