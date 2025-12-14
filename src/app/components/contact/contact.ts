@@ -2,6 +2,7 @@ import { Component, signal, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { LoadingService } from '../../services/loading.service';
 import emailjs from '@emailjs/browser';
+import { environment } from '../../../environments/environment';  // ← Add this import at the very top
 
 @Component({
   selector: 'app-contact',
@@ -12,11 +13,11 @@ import emailjs from '@emailjs/browser';
 export class Contact {
   loadingService = inject(LoadingService);
   private fb = inject(FormBuilder);
-  
-  // REPLACE THESE WITH YOUR EMAILJS CREDENTIALS
-  private serviceId = 'service_65d3492';
-  private templateId = 'template_nxip4kh';
-  private publicKey = 'u2CZBIFDcqA9MmbXt';
+
+  // Then in the component class:
+  private serviceId = environment.emailjs.serviceId;
+  private templateId = environment.emailjs.templateId;
+  private publicKey = environment.emailjs.publicKey;
   
   submitted = signal(false);
   successMessage = signal('');
