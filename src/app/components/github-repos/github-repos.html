@@ -1,0 +1,133 @@
+<section class="repos-section">
+  <h2>GitHub Repositories</h2>
+  
+  @if (error()) {
+    <div class="error-alert">
+      <span>⚠️</span>
+      <p>{{ error() }}</p>
+      <button class="btn-retry" (click)="loadRepos()">Retry</button>
+    </div>
+  }
+  
+  @if (allRepos().length > 0) {
+    <!-- Stats Overview -->
+    <div class="stats-overview">
+      <div class="stat-card">
+        <span class="stat-icon">📦</span>
+        <span class="stat-value">{{ allRepos().length }}</span>
+        <span class="stat-label">Repositories</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">⭐</span>
+        <span class="stat-value">{{ totalStars() }}</span>
+        <span class="stat-label">Total Stars</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">🔱</span>
+        <span class="stat-value">{{ totalForks() }}</span>
+        <span class="stat-label">Total Forks</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-icon">💻</span>
+        <span class="stat-value">{{ languages().length }}</span>
+        <span class="stat-label">Languages</span>
+      </div>
+    </div>
+    
+    <!-- Filters -->
+    <div class="filters-bar">
+      <div class="search-box">
+        <input 
+          type="text"
+          placeholder="Search repositories..."
+          [(ngModel)]="searchTerm"
+          [value]="searchTerm()">
+        @if (searchTerm()) {
+          <button class="clear-btn" (click)="clearSearch()">✕</button>
+        }
+      </div>
+      
+      <div class="sort-box">
+        <label>Sort by:</label>
+        <select [(ngModel)]="sortBy" [value]="sortBy()">
+          <option value="updated">Last Updated</option>
+          <option value="stars">Most Stars</option>
+          <option value="name">Name (A-Z)</option>
+        </select>
+      </div>
+    </div>
+    
+    <!-- Results Info -->
+    <div class="results-info">
+      Showing {{ filteredRepos().length }} of {{ allRepos().length }} repositories
+    </div>
+    
+    <!-- Repositories Grid -->
+    @if (filteredRepos().length > 0) {
+      <div class="repos-grid">
+        @for (repo of filteredRepos(); track repo.id) {
+        <a [routerLink]="['/repo', repo.name]" class="repo-card-link">    
+            <div class="repo-card">
+                <div class="repo-header">
+                <h3>{{ repo.name }}</h3>
+                @if (repo.language) {
+                    <span 
+                    class="language-badge"
+                    [style.background-color]="getLanguageColor(repo.language)">
+                    {{ repo.language }}
+                    </span>
+                }
+                </div>
+                
+                @if (repo.description) {
+                <p class="repo-description">{{ repo.description }}</p>
+                } @else {
+                <p class="repo-description no-description">No description provided</p>
+                }
+                
+                @if (repo.topics && repo.topics.length > 0) {
+                <div class="topics">
+                    @for (topic of repo.topics.slice(0, 5); track topic) {
+                    <span class="topic-tag">{{ topic }}</span>
+                    }
+                </div>
+                }
+                
+                <div class="repo-stats">
+                <span class="stat-item">
+                    <span class="icon">⭐</span>
+                    {{ repo.stargazers_count }}
+                </span>
+                <span class="stat-item">
+                    <span class="icon">🔱</span>
+                    {{ repo.forks_count }}
+                </span>
+                @if (repo.open_issues_count > 0) {
+                    <span class="stat-item">
+                    <span class="icon">❗</span>
+                    {{ repo.open_issues_count }}
+                    </span>
+                }
+                </div>
+                
+                <div class="repo-footer">
+                <span class="updated">Updated {{ formatDate(repo.updated_at) }}</span>
+                @if (repo.homepage) {
+                    <a [href]="repo.homepage" target="_blank" class="homepage-link">
+                    🔗 Demo
+                    </a>
+                }
+                </div>
+            </div>
+        </a>
+        }
+      </div>
+    } @else {
+      <div class="no-results">
+        <h3>No repositories found</h3>
+        <p>Try a different search term</p>
+        <button class="btn" (click)="clearSearch()">Clear Search</button>
+      </div>
+    }
+  }
+</section>

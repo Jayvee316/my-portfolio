@@ -1,0 +1,67 @@
+<section class="github-profile-section">
+  <h2>GitHub Profile</h2>
+  
+  @if (error()) {
+    <div class="error-alert">
+      <span>⚠️</span>
+      <p>{{ error() }}</p>
+      <button class="btn-retry" (click)="loadProfile()">Retry</button>
+    </div>
+  }
+  
+  @if (profile()) {
+    <div class="profile-card">
+      <div class="profile-header">
+        <img [src]="profile()!.avatar_url" [alt]="profile()!.name" class="avatar">
+        <div class="profile-info">
+          <h2>{{ profile()!.name }}</h2>
+          <p class="username">@{{ profile()!.login }}</p>
+          @if (profile()!.bio) {
+            <p class="bio">{{ profile()!.bio }}</p>
+          }
+          
+          <div class="profile-details">
+            @if (profile()!.location) {
+              <span class="detail">📍 {{ profile()!.location }}</span>
+            }
+            @if (profile()!.company) {
+              <span class="detail">🏢 {{ profile()!.company }}</span>
+            }
+            @if (profile()!.blog) {
+              <a [href]="profile()!.blog" target="_blank" class="detail">
+                🔗 {{ profile()!.blog }}
+              </a>
+            }
+            @if (profile()!.twitter_username) {
+              <a 
+                [href]="'https://twitter.com/' + profile()!.twitter_username" 
+                target="_blank" 
+                class="detail">
+                🐦 @{{ profile()!.twitter_username }}
+              </a>
+            }
+          </div>
+        </div>
+      </div>
+      
+      <div class="profile-stats">
+        <div class="stat">
+          <span class="stat-value">{{ profile()!.public_repos }}</span>
+          <span class="stat-label">Repositories</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">{{ profile()!.followers }}</span>
+          <span class="stat-label">Followers</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">{{ profile()!.following }}</span>
+          <span class="stat-label">Following</span>
+        </div>
+      </div>
+      
+      <div class="profile-footer">
+        <span>Member since {{ formatDate(profile()!.created_at) }}</span>
+      </div>
+    </div>
+  }
+</section>

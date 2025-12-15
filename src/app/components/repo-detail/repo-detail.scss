@@ -1,0 +1,259 @@
+.repo-detail-section {
+  padding: 2rem 0;
+}
+
+.error-alert {
+  background: #fee;
+  color: #c33;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #e74c3c;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.repo-header {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px var(--shadow);
+  margin-bottom: 2rem;
+  
+  h1 {
+    color: var(--text-color);
+    margin: 0 0 1rem 0;
+    font-size: 2rem;
+  }
+  
+  .description {
+    color: #7f8c8d;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.repo-links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.3s;
+  background: #95a5a6;
+  color: white;
+  border: none;
+  cursor: pointer;
+  
+  &:hover {
+    background: #7f8c8d;
+  }
+}
+
+.btn-primary {
+  background: #3498db;
+  
+  &:hover {
+    background: #2980b9;
+  }
+}
+
+.btn-retry {
+  padding: 0.5rem 1rem;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  
+  &:hover {
+    background: #c0392b;
+  }
+}
+
+.repo-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.stats-panel,
+.languages-panel,
+.commits-panel,
+.topics-panel {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px var(--shadow);
+  
+  h3 {
+    color: var(--text-color);
+    margin: 0 0 1.5rem 0;
+    font-size: 1.3rem;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 0.5rem;
+  }
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eee;
+  
+  &:last-of-type {
+    border-bottom: none;
+  }
+  
+  .stat-icon {
+    font-size: 2rem;
+  }
+  
+  .stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #3498db;
+  }
+  
+  .stat-label {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+  }
+}
+
+[data-theme="dark"] .stat-item {
+  border-bottom-color: #444;
+}
+
+.date-info {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+  
+  p {
+    color: #7f8c8d;
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+  }
+}
+
+[data-theme="dark"] .date-info {
+  border-top-color: #444;
+}
+
+.language-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.language-item {
+  .language-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    
+    .language-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    
+    .language-name {
+      flex: 1;
+      color: var(--text-color);
+      font-weight: 500;
+    }
+    
+    .language-percent {
+      color: #7f8c8d;
+      font-size: 0.9rem;
+    }
+  }
+  
+  .language-bar-container {
+    width: 100%;
+    height: 8px;
+    background: #ecf0f1;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .language-bar {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease-out;
+  }
+}
+
+[data-theme="dark"] .language-bar-container {
+  background: #444;
+}
+
+.commits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.commit-item {
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+  border-left: 3px solid #3498db;
+  
+  .commit-message {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.5rem;
+    
+    &:hover {
+      color: #3498db;
+    }
+  }
+  
+  .commit-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    
+    .commit-author {
+      font-weight: 500;
+    }
+  }
+}
+
+[data-theme="dark"] .commit-item {
+  background: #2d2d2d;
+}
+
+.topics-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.topic-tag {
+  background: #e1f5fe;
+  color: #01579b;
+  padding: 0.5rem 1rem;
+  border-radius: 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+[data-theme="dark"] .topic-tag {
+  background: #01579b;
+  color: #e1f5fe;
+}

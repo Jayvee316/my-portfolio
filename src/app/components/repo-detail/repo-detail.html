@@ -1,0 +1,131 @@
+<section class="repo-detail-section">
+  @if (error()) {
+    <div class="error-alert">
+      <span>⚠️</span>
+      <p>{{ error() }}</p>
+      <button class="btn-retry" (click)="loadRepoDetails()">Retry</button>
+    </div>
+  }
+  
+  @if (repo()) {
+    <div class="repo-header">
+      <h1>{{ repo()!.name }}</h1>
+      @if (repo()!.description) {
+        <p class="description">{{ repo()!.description }}</p>
+      }
+      
+      <div class="repo-links">
+        <a [href]="repo()!.html_url" target="_blank" class="btn btn-primary">
+          View on GitHub
+        </a>
+        @if (repo()!.homepage) {
+          <a [href]="repo()!.homepage" target="_blank" class="btn">
+            Live Demo
+          </a>
+        }
+      </div>
+    </div>
+    
+    <div class="repo-content">
+      <!-- Stats Panel -->
+      <div class="stats-panel">
+        <h3>Repository Stats</h3>
+        <div class="stat-item">
+          <span class="stat-icon">⭐</span>
+          <div>
+            <div class="stat-value">{{ repo()!.stargazers_count }}</div>
+            <div class="stat-label">Stars</div>
+          </div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-icon">🔱</span>
+          <div>
+            <div class="stat-value">{{ repo()!.forks_count }}</div>
+            <div class="stat-label">Forks</div>
+          </div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-icon">❗</span>
+          <div>
+            <div class="stat-value">{{ repo()!.open_issues_count }}</div>
+            <div class="stat-label">Open Issues</div>
+          </div>
+        </div>
+        <div class="stat-item">
+          <span class="stat-icon">📦</span>
+          <div>
+            <div class="stat-value">{{ formatBytes(repo()!.size * 1024) }}</div>
+            <div class="stat-label">Size</div>
+          </div>
+        </div>
+        
+        <div class="date-info">
+          <p><strong>Created:</strong> {{ formatDate(repo()!.created_at) }}</p>
+          <p><strong>Updated:</strong> {{ formatDate(repo()!.updated_at) }}</p>
+        </div>
+      </div>
+      
+      <!-- Languages Panel -->
+      @if (languageStats().length > 0) {
+        <div class="languages-panel">
+          <h3>Languages Used</h3>
+          <div class="language-bars">
+            @for (lang of languageStats(); track lang.name) {
+              <div class="language-item">
+                <div class="language-header">
+                  <span 
+                    class="language-dot"
+                    [style.background-color]="getLanguageColor(lang.name)">
+                  </span>
+                  <span class="language-name">{{ lang.name }}</span>
+                  <span class="language-percent">{{ lang.percentage }}%</span>
+                </div>
+                <div class="language-bar-container">
+                  <div 
+                    class="language-bar"
+                    [style.width.%]="lang.percentage"
+                    [style.background-color]="getLanguageColor(lang.name)">
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+      
+      <!-- Recent Commits -->
+      @if (commits().length > 0) {
+        <div class="commits-panel">
+          <h3>Recent Commits (Last 10)</h3>
+          <div class="commits-list">
+            @for (commit of commits(); track commit.sha) {
+              <div class="commit-item">
+                <div class="commit-header">
+                  <a [href]="commit.html_url" target="_blank" class="commit-message">
+                    {{ commit.commit.message }}
+                  </a>
+                </div>
+                <div class="commit-meta">
+                  <span class="commit-author">{{ commit.commit.author.name }}</span>
+                  <span class="commit-date">{{ formatDate(commit.commit.author.date) }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+      
+      <!-- Topics -->
+      @if (repo()!.topics && repo()!.topics.length > 0) {
+        <div class="topics-panel">
+          <h3>Topics</h3>
+          <div class="topics-list">
+            @for (topic of repo()!.topics; track topic) {
+              <span class="topic-tag">{{ topic }}</span>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+</section>
