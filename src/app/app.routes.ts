@@ -7,6 +7,7 @@ import { Blog } from './components/blog/blog';
 import { GithubProfile } from './components/github-profile/github-profile';
 import { GithubRepos} from './components/github-repos/github-repos';
 import { RepoDetail } from './components/repo-detail/repo-detail';
+import { NotFound } from './components/not-found/not-found';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/about', pathMatch: 'full' },
@@ -17,5 +18,6 @@ export const routes: Routes = [
   { path: 'blog', component: Blog },
   { path: 'github-profile', component: GithubProfile },
   { path: 'github-repos', component: GithubRepos },
-  { path: 'repo/:name', component: RepoDetail }
+  { path: 'repo/:name', component: RepoDetail },
+  { path: '**', component: NotFound }
 ];

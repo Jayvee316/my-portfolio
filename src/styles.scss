@@ -28,6 +28,13 @@ body {
   color: var(--text-color);
   background: var(--bg-color);
   transition: background 0.3s, color 0.3s;
+  
+  // Prevent horizontal scroll on mobile
+  overflow-x: hidden;
+  
+  // Better text rendering
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .app-container {
@@ -52,8 +59,64 @@ body {
   margin-top: auto;
 }
 
+// Mobile improvements
 @media (max-width: 768px) {
   .main-content {
     padding: 1rem;
   }
+  
+  // Make all text slightly smaller on mobile
+  body {
+    font-size: 14px;
+  }
+  
+  h1 {
+    font-size: 1.8rem !important;
+  }
+  
+  h2 {
+    font-size: 1.5rem !important;
+  }
+  
+  h3 {
+    font-size: 1.2rem !important;
+  }
+}
+
+// Extra small devices
+@media (max-width: 480px) {
+  .main-content {
+    padding: 0.5rem;
+  }
+  
+  h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  h2 {
+    font-size: 1.3rem !important;
+  }
+}
+
+// Improve tap targets on mobile (minimum 44x44px)
+@media (hover: none) and (pointer: coarse) {
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+// Smooth scrolling
+html {
+  scroll-behavior: smooth;
+}
+
+// Better focus states for accessibility
+*:focus-visible {
+  outline: 2px solid #3498db;
+  outline-offset: 2px;
 }
