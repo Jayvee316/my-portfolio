@@ -6,16 +6,20 @@
   
   <!-- Search Box -->
   <div class="search-container">
-    <input 
-      type="text" 
+    <input
+      type="text"
       class="search-input"
       placeholder="Search projects by name, description, or technology..."
       [(ngModel)]="searchTerm"
-      [value]="searchTerm()">
-    
+      aria-label="Search projects">
+
     <!-- Clear button - only show if there's text -->
     @if (searchTerm()) {
-      <button class="clear-btn" (click)="clearSearch()">
+      <button
+        class="clear-btn"
+        (click)="clearSearch()"
+        aria-label="Clear search"
+        type="button">
         ✕
       </button>
     }
@@ -99,7 +103,7 @@
   @if (showDeleteDialog()) {
     <app-confirm-dialog
       [title]="'Delete Project'"
-      [message]="'Are you sure you want to delete \'' + projectToDelete()?.title + '\'? This action cannot be undone.'"
+      [message]="deleteMessage()"
       [confirmText]="'Delete'"
       [cancelText]="'Cancel'"
       [type]="'danger'"

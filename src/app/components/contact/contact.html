@@ -35,16 +35,16 @@
     <div class="contact-form-container">
       <!-- Error Message -->
       @if (errorMessage()) {
-        <div class="error-alert">
-          <span class="error-icon">✕</span>
+        <div class="error-alert" role="alert" aria-live="assertive">
+          <span class="error-icon" aria-hidden="true">✕</span>
           <p>{{ errorMessage() }}</p>
         </div>
       }
-      
+
       <!-- Success Message -->
       @if (successMessage()) {
-        <div class="success-alert">
-          <span class="success-icon">✓</span>
+        <div class="success-alert" role="status" aria-live="polite">
+          <span class="success-icon" aria-hidden="true">✓</span>
           <p>{{ successMessage() }}</p>
         </div>
       }
@@ -63,7 +63,7 @@
           
           <!-- Validation Messages -->
           @if (submitted() && nameControl.invalid) {
-            <div class="error-message">
+            <div class="error-message" role="alert">
               @if (nameControl.errors?.['required']) {
                 <span>Name is required</span>
               }
@@ -85,7 +85,7 @@
             [class.error]="submitted() && emailControl.invalid">
           
           @if (submitted() && emailControl.invalid) {
-            <div class="error-message">
+            <div class="error-message" role="alert">
               @if (emailControl.errors?.['required']) {
                 <span>Email is required</span>
               }
@@ -107,7 +107,7 @@
             [class.error]="submitted() && subjectControl.invalid">
           
           @if (submitted() && subjectControl.invalid) {
-            <div class="error-message">
+            <div class="error-message" role="alert">
               @if (subjectControl.errors?.['required']) {
                 <span>Subject is required</span>
               }
@@ -133,7 +133,7 @@
           </div>
           
           @if (submitted() && messageControl.invalid) {
-            <div class="error-message">
+            <div class="error-message" role="alert">
               @if (messageControl.errors?.['required']) {
                 <span>Message is required</span>
               }

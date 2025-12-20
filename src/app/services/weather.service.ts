@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError } from 'rxjs';
 import { ErrorService } from './error.service';
+import { environment } from '../../environments/environment';
 
 /**
  * WeatherService - OpenWeatherMap API integration
@@ -40,8 +41,10 @@ export interface WeatherData {
 export class WeatherService {
   private http = inject(HttpClient);
   private errorService = inject(ErrorService);
-  private apiKey = 'ce2d183bd2568b07ee1e12e99a0df943';
   private apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
+
+  // API key loaded from environment file - keeps secrets out of source code
+  private apiKey = environment.openweather.apiKey;
 
   /** Fetches current weather for a city. Uses metric units (Celsius, m/s). */
   getWeather(city: string): Observable<WeatherData> {

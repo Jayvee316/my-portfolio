@@ -77,8 +77,8 @@
       
       <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
         <!-- Category Selection -->
-        <div class="category-selector">
-          <label>What can I help you with? *</label>
+        <div class="category-selector" role="group" aria-labelledby="category-label">
+          <span id="category-label" class="group-label">What can I help you with? *</span>
           <div class="categories">
             @for (category of categories; track category.value) {
               <label class="category-option" [class.selected]="contactForm.value.category === category.value">

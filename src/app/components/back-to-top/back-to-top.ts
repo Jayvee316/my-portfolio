@@ -1,5 +1,11 @@
 import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 
+/**
+ * BackToTop - Floating scroll-to-top button
+ *
+ * Appears after scrolling down 300px and smoothly scrolls to top when clicked.
+ * Includes accessibility features: proper ARIA label and focus management.
+ */
 @Component({
   selector: 'app-back-to-top',
   imports: [],
@@ -9,10 +15,11 @@ import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (isVisible()) {
-      <button 
+      <button
         class="back-to-top"
         (click)="scrollToTop()"
-        title="Back to top">
+        type="button"
+        aria-label="Scroll to top of page">
         ↑
       </button>
     }
@@ -83,5 +90,19 @@ export class BackToTop {
       top: 0,
       behavior: 'smooth'
     });
+
+    // After scroll completes, focus the main heading for accessibility
+    // This helps screen reader users know they're at the top
+    setTimeout(() => {
+      const mainHeading = document.querySelector('h1, [role="main"] h2, main h2');
+      if (mainHeading instanceof HTMLElement) {
+        mainHeading.setAttribute('tabindex', '-1');
+        mainHeading.focus();
+        // Remove tabindex after focus to keep natural tab order
+        mainHeading.addEventListener('blur', () => {
+          mainHeading.removeAttribute('tabindex');
+        }, { once: true });
+      }
+    }, 500); // Wait for smooth scroll to complete
   }
 }

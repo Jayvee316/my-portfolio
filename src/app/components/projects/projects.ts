@@ -100,6 +100,20 @@ export class Projects {
   showDeleteDialog = signal(false);
   projectToDelete = signal<Project | null>(null);
 
+  // Computed message for delete dialog - sanitizes title to prevent XSS
+  deleteMessage = computed(() => {
+    const project = this.projectToDelete();
+    if (!project) return 'Are you sure you want to delete this project?';
+    // Sanitize title by encoding special characters
+    const safeTitle = project.title
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+    return `Are you sure you want to delete '${safeTitle}'? This action cannot be undone.`;
+  });
+
   // Called when user clicks delete button on a project
   onDeleteClick(project: Project) {
     this.projectToDelete.set(project);

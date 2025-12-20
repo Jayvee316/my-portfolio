@@ -2,13 +2,13 @@
   <h2>Weather Widget</h2>
   
   <div class="search-box">
-    <input 
-      type="text" 
-      [(ngModel)]="city" 
-      [value]="city()"
+    <input
+      type="text"
+      [(ngModel)]="city"
       placeholder="Enter city name"
+      aria-label="City name"
       (keyup.enter)="searchWeather()">
-    <button (click)="searchWeather()">Search</button>
+    <button (click)="searchWeather()" type="button">Search</button>
   </div>
   
   @if (error()) {
@@ -18,7 +18,9 @@
   @if (weather()) {
     <div class="weather-card">
       <h3>{{ weather()!.name }}</h3>
-      <img [src]="getWeatherIcon(weather()!.weather[0].icon)" alt="Weather icon">
+      <img
+        [src]="getWeatherIcon(weather()!.weather[0].icon)"
+        [alt]="'Current weather: ' + weather()!.weather[0].description">
       <div class="temp">{{ weather()!.main.temp }}°C</div>
       <div class="description">{{ weather()!.weather[0].description }}</div>
       <div class="details">

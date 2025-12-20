@@ -184,14 +184,14 @@
 // Category Selector
 .category-selector {
   margin-bottom: 2rem;
-  
-  > label {
+
+  .group-label {
     display: block;
     color: var(--text-color);
     font-weight: 600;
     margin-bottom: 1rem;
   }
-  
+
   .categories {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
