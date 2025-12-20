@@ -1,0 +1,265 @@
+<section class="contact-advanced-section">
+  <div class="section-header">
+    <h2>Get In Touch</h2>
+    <p class="subtitle">Have a project in mind? Let's discuss how we can work together!</p>
+    
+    @if (totalSubmissions() > 0) {
+      <div class="stats">
+        <span class="stat">📨 Total Inquiries: {{ totalSubmissions() }}</span>
+      </div>
+    }
+  </div>
+  
+  <div class="contact-grid">
+    <!-- Quick Contact Info -->
+    <div class="quick-info">
+      <h3>Contact Information</h3>
+      
+      <div class="info-card">
+        <div class="icon">📧</div>
+        <div>
+          <strong>Email</strong>
+          <a href="mailto:your.email@example.com">your.email@example.com</a>
+        </div>
+      </div>
+      
+      <div class="info-card">
+        <div class="icon">💼</div>
+        <div>
+          <strong>LinkedIn</strong>
+          <a href="https://linkedin.com/in/yourprofile" target="_blank">Connect with me</a>
+        </div>
+      </div>
+      
+      <div class="info-card">
+        <div class="icon">🐙</div>
+        <div>
+          <strong>GitHub</strong>
+          <a href="https://github.com/yourusername" target="_blank">Check my code</a>
+        </div>
+      </div>
+      
+      <div class="response-time">
+        <h4>⏱️ Response Time</h4>
+        <p>I typically respond within <strong>24-48 hours</strong></p>
+      </div>
+      
+      <div class="availability">
+        <h4>🌍 Timezone</h4>
+        <p>Available for projects worldwide</p>
+        <p class="timezone">UTC+8 (Manila, Philippines)</p>
+      </div>
+    </div>
+    
+    <!-- Advanced Form -->
+    <div class="form-container">
+      <!-- Success Message -->
+      @if (successMessage()) {
+        <div class="success-alert">
+          <span class="icon">✓</span>
+          <div>
+            <strong>Message Sent!</strong>
+            <p>{{ successMessage() }}</p>
+          </div>
+        </div>
+      }
+      
+      <!-- Error Message -->
+      @if (errorMessage()) {
+        <div class="error-alert">
+          <span class="icon">✕</span>
+          <div>
+            <strong>Error</strong>
+            <p>{{ errorMessage() }}</p>
+          </div>
+        </div>
+      }
+      
+      <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+        <!-- Category Selection -->
+        <div class="category-selector">
+          <label>What can I help you with? *</label>
+          <div class="categories">
+            @for (category of categories; track category.value) {
+              <label class="category-option" [class.selected]="contactForm.value.category === category.value">
+                <input 
+                  type="radio" 
+                  formControlName="category" 
+                  [value]="category.value">
+                <span class="category-content">
+                  <span class="category-icon">{{ category.icon }}</span>
+                  <span class="category-label">{{ category.label }}</span>
+                </span>
+              </label>
+            }
+          </div>
+        </div>
+        
+        <!-- Name & Email Row -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Full Name *</label>
+            <input 
+              type="text" 
+              id="name"
+              formControlName="name"
+              placeholder="John Doe"
+              [class.error]="submitted() && nameControl.invalid">
+            
+            @if (submitted() && nameControl.invalid) {
+              <div class="error-message">
+                @if (nameControl.errors?.['required']) {
+                  <span>Name is required</span>
+                }
+                @if (nameControl.errors?.['minlength']) {
+                  <span>Name must be at least 2 characters</span>
+                }
+              </div>
+            }
+          </div>
+          
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input 
+              type="email" 
+              id="email"
+              formControlName="email"
+              placeholder="john@example.com"
+              [class.error]="submitted() && emailControl.invalid">
+            
+            @if (submitted() && emailControl.invalid) {
+              <div class="error-message">
+                @if (emailControl.errors?.['required']) {
+                  <span>Email is required</span>
+                }
+                @if (emailControl.errors?.['email']) {
+                  <span>Please enter a valid email</span>
+                }
+              </div>
+            }
+          </div>
+        </div>
+        
+        <!-- Phone & Company Row -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phone">Phone Number (Optional)</label>
+            <input 
+              type="tel" 
+              id="phone"
+              formControlName="phone"
+              placeholder="+1 (555) 123-4567"
+              [class.error]="submitted() && phoneControl.invalid">
+            
+            @if (submitted() && phoneControl.invalid) {
+              <div class="error-message">
+                <span>Please enter a valid phone number</span>
+              </div>
+            }
+          </div>
+          
+          <div class="form-group">
+            <label for="company">Company / Organization (Optional)</label>
+            <input 
+              type="text" 
+              id="company"
+              formControlName="company"
+              placeholder="Acme Inc.">
+          </div>
+        </div>
+        
+        <!-- Subject -->
+        <div class="form-group">
+          <label for="subject">Subject *</label>
+          <input 
+            type="text" 
+            id="subject"
+            formControlName="subject"
+            placeholder="Brief description of your inquiry"
+            [class.error]="submitted() && subjectControl.invalid">
+          
+          @if (submitted() && subjectControl.invalid) {
+            <div class="error-message">
+              @if (subjectControl.errors?.['required']) {
+                <span>Subject is required</span>
+              }
+              @if (subjectControl.errors?.['minlength']) {
+                <span>Subject must be at least 5 characters</span>
+              }
+            </div>
+          }
+        </div>
+        
+        <!-- Message -->
+        <div class="form-group">
+          <label for="message">Your Message *</label>
+          <textarea 
+            id="message"
+            formControlName="message"
+            rows="6"
+            placeholder="Tell me more about your project, requirements, timeline, budget, etc."
+            [class.error]="submitted() && messageControl.invalid"></textarea>
+          
+          <div class="char-counter">
+            <span [class.warning]="messageControl.value?.length > 900">
+              {{ messageControl.value?.length || 0 }} / 1000
+            </span>
+          </div>
+          
+          @if (submitted() && messageControl.invalid) {
+            <div class="error-message">
+              @if (messageControl.errors?.['required']) {
+                <span>Message is required</span>
+              }
+              @if (messageControl.errors?.['minlength']) {
+                <span>Message must be at least 10 characters</span>
+              }
+              @if (messageControl.errors?.['maxlength']) {
+                <span>Message cannot exceed 1000 characters</span>
+              }
+            </div>
+          }
+        </div>
+        
+        <!-- Checkboxes -->
+        <div class="checkbox-group">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="urgent">
+            <span>🚨 This is urgent (I'll prioritize your inquiry)</span>
+          </label>
+          
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="newsletter">
+            <span>📬 Subscribe to occasional updates about my work</span>
+          </label>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="form-actions">
+          <button 
+            type="submit" 
+            class="btn-submit"
+            [disabled]="loadingService.isLoading()">
+            @if (loadingService.isLoading()) {
+              <span>Sending...</span>
+            } @else {
+              <span>📨 Send Message</span>
+            }
+          </button>
+          
+          <button 
+            type="button" 
+            class="btn-clear"
+            (click)="clearForm()"
+            [disabled]="loadingService.isLoading()">
+            <span>🗑️ Clear Form</span>
+          </button>
+        </div>
+        
+        <p class="privacy-note">
+          🔒 Your information is secure and will never be shared with third parties.
+        </p>
+      </form>
+    </div>
+  </div>
+</section>

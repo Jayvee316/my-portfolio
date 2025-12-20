@@ -23,6 +23,11 @@ export const routes: Routes = [
       import('./components/contact/contact').then((m) => m.Contact),
   },
   {
+    path: 'contact-advanced',
+    loadComponent: () =>
+      import('./components/contact-advanced/contact-advanced').then((m) => m.ContactAdvanced),
+  },
+  {
     path: 'blog',
     loadComponent: () =>
       import('./components/blog/blog').then((m) => m.Blog),
