@@ -37,19 +37,23 @@
     <!-- Filters -->
     <div class="filters-bar">
       <div class="search-box">
-        <input 
+        <input
           type="text"
           placeholder="Search repositories..."
           [(ngModel)]="searchTerm"
-          [value]="searchTerm()">
+          aria-label="Search repositories">
         @if (searchTerm()) {
-          <button class="clear-btn" (click)="clearSearch()">✕</button>
+          <button
+            class="clear-btn"
+            (click)="clearSearch()"
+            aria-label="Clear search"
+            type="button">✕</button>
         }
       </div>
-      
+
       <div class="sort-box">
-        <label>Sort by:</label>
-        <select [(ngModel)]="sortBy" [value]="sortBy()">
+        <label for="sort-select">Sort by:</label>
+        <select id="sort-select" [(ngModel)]="sortBy">
           <option value="updated">Last Updated</option>
           <option value="stars">Most Stars</option>
           <option value="name">Name (A-Z)</option>
@@ -64,64 +68,85 @@
     
     <!-- Repositories Grid -->
     @if (filteredRepos().length > 0) {
-      <div class="repos-grid">
-        @for (repo of filteredRepos(); track repo.id) {
-        <a [routerLink]="['/repo', repo.name]" class="repo-card-link">    
-            <div class="repo-card">
+      <!--
+        @defer - Lazy loads this section for better performance
+        - on viewport: loads when scrolled into view
+        - @placeholder: shown before loading starts
+        - @loading: shown while loading (minimum 200ms to avoid flicker)
+      -->
+      @defer (on viewport) {
+        <div class="repos-grid">
+          @for (repo of filteredRepos(); track repo.id) {
+            <a [routerLink]="['/repo', repo.name]" class="repo-card-link">
+              <div class="repo-card">
                 <div class="repo-header">
-                <h3>{{ repo.name }}</h3>
-                @if (repo.language) {
-                    <span 
-                    class="language-badge"
-                    [style.background-color]="getLanguageColor(repo.language)">
-                    {{ repo.language }}
+                  <h3>{{ repo.name }}</h3>
+                  @if (repo.language) {
+                    <span
+                      class="language-badge"
+                      [style.background-color]="getLanguageColor(repo.language)">
+                      {{ repo.language }}
                     </span>
-                }
+                  }
                 </div>
-                
+
                 @if (repo.description) {
-                <p class="repo-description">{{ repo.description }}</p>
+                  <!-- Using TruncatePipe to limit description length -->
+                  <p class="repo-description">{{ repo.description | truncate:120 }}</p>
                 } @else {
-                <p class="repo-description no-description">No description provided</p>
+                  <p class="repo-description no-description">No description provided</p>
                 }
-                
+
                 @if (repo.topics && repo.topics.length > 0) {
-                <div class="topics">
+                  <div class="topics">
                     @for (topic of repo.topics.slice(0, 5); track topic) {
-                    <span class="topic-tag">{{ topic }}</span>
+                      <span class="topic-tag">{{ topic }}</span>
                     }
-                </div>
+                  </div>
                 }
-                
+
                 <div class="repo-stats">
-                <span class="stat-item">
-                    <span class="icon">⭐</span>
+                  <span class="stat-item">
+                    <span class="icon" aria-hidden="true">⭐</span>
+                    <span class="visually-hidden">Stars:</span>
                     {{ repo.stargazers_count }}
-                </span>
-                <span class="stat-item">
-                    <span class="icon">🔱</span>
+                  </span>
+                  <span class="stat-item">
+                    <span class="icon" aria-hidden="true">🔱</span>
+                    <span class="visually-hidden">Forks:</span>
                     {{ repo.forks_count }}
-                </span>
-                @if (repo.open_issues_count > 0) {
+                  </span>
+                  @if (repo.open_issues_count > 0) {
                     <span class="stat-item">
-                    <span class="icon">❗</span>
-                    {{ repo.open_issues_count }}
+                      <span class="icon" aria-hidden="true">❗</span>
+                      <span class="visually-hidden">Issues:</span>
+                      {{ repo.open_issues_count }}
                     </span>
-                }
+                  }
                 </div>
-                
+
                 <div class="repo-footer">
-                <span class="updated">Updated {{ formatDate(repo.updated_at) }}</span>
-                @if (repo.homepage) {
+                  <!-- Using TimeAgoPipe instead of formatDate() method -->
+                  <span class="updated">Updated {{ repo.updated_at | timeAgo }}</span>
+                  @if (repo.homepage) {
                     <a [href]="repo.homepage" target="_blank" class="homepage-link">
-                    🔗 Demo
+                      🔗 Demo
                     </a>
-                }
+                  }
                 </div>
-            </div>
-        </a>
-        }
-      </div>
+              </div>
+            </a>
+          }
+        </div>
+      } @placeholder {
+        <div class="repos-placeholder">
+          <p>Scroll down to load repositories...</p>
+        </div>
+      } @loading (minimum 200ms) {
+        <div class="repos-loading">
+          <p>Loading repositories...</p>
+        </div>
+      }
     } @else {
       <div class="no-results">
         <h3>No repositories found</h3>

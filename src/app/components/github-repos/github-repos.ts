@@ -4,10 +4,20 @@ import { RouterLink } from '@angular/router';
 import { GitHubService, GitHubRepo } from '../../services/github.service';
 import { LoadingService } from '../../services/loading.service';
 import { ErrorService } from '../../services/error.service';
+import { TimeAgoPipe, TruncatePipe } from '../../pipes';
 
+/**
+ * GithubRepos - Displays user's GitHub repositories
+ *
+ * Demonstrates:
+ * - Custom pipes (TimeAgoPipe, TruncatePipe)
+ * - @defer for lazy loading repo cards
+ * - Computed signals for filtering/sorting
+ * - GitHub API integration
+ */
 @Component({
   selector: 'app-github-repos',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, TimeAgoPipe, TruncatePipe],
   templateUrl: './github-repos.html',
   styleUrl: './github-repos.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -97,24 +107,9 @@ export class GithubRepos implements OnInit {
   clearSearch() {
     this.searchTerm.set('');
   }
-  
-  formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffTime = Math.abs(now.getTime() - date.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    if (diffDays < 30) {
-      return `${diffDays} days ago`;
-    } else if (diffDays < 365) {
-      const months = Math.floor(diffDays / 30);
-      return `${months} month${months > 1 ? 's' : ''} ago`;
-    } else {
-      const years = Math.floor(diffDays / 365);
-      return `${years} year${years > 1 ? 's' : ''} ago`;
-    }
-  }
-  
+
+  // formatDate removed - now using TimeAgoPipe instead: {{ date | timeAgo }}
+
   getLanguageColor(language: string): string {
     const colors: { [key: string]: string } = {
       'JavaScript': '#f1e05a',
