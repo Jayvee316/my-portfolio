@@ -1,20 +1,23 @@
-import { Component, signal, computed, inject, OnInit } from '@angular/core';
+import { Component, signal, computed, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GitHubService, GitHubRepo, GitHubCommit, GitHubLanguages } from '../../services/github.service';
 import { LoadingService } from '../../services/loading.service';
+import { ErrorService } from '../../services/error.service';
 import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-repo-detail',
   imports: [],
   templateUrl: './repo-detail.html',
-  styleUrl: './repo-detail.scss'
+  styleUrl: './repo-detail.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RepoDetail implements OnInit {
   private githubService = inject(GitHubService);
   private loadingService = inject(LoadingService);
+  private errorService = inject(ErrorService);
   private route = inject(ActivatedRoute);
-  
+
   // REPLACE WITH YOUR GITHUB USERNAME
   username = 'Jayvee316';
   repoName = signal('');
@@ -49,7 +52,7 @@ export class RepoDetail implements OnInit {
   loadRepoDetails() {
     this.loadingService.show();
     this.error.set('');
-    
+
     // Load repo, commits, and languages in parallel
     forkJoin({
       repo: this.githubService.getRepo(this.username, this.repoName()),
@@ -63,9 +66,8 @@ export class RepoDetail implements OnInit {
         this.loadingService.hide();
       },
       error: (err) => {
-        this.error.set('Failed to load repository details');
+        this.error.set(this.errorService.getErrorMessage(err));
         this.loadingService.hide();
-        console.error(err);
       }
     });
   }

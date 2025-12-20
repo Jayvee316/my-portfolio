@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 interface Project {
@@ -14,7 +14,8 @@ interface Project {
   selector: 'app-projects',
   imports: [FormsModule],
   templateUrl: './projects.html',
-  styleUrl: './projects.scss'
+  styleUrl: './projects.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Projects {
   // Signal for search term

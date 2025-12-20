@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { Observable, catchError } from 'rxjs';
+import { ErrorService } from './error.service';
 
 export interface GitHubUser {
   login: string;
@@ -55,12 +56,13 @@ export interface GitHubLanguages {
 })
 export class GitHubService {
   private http = inject(HttpClient);
+  private errorService = inject(ErrorService);
   private baseUrl = 'https://api.github.com';
-  
+
   // Optional: Add your GitHub Personal Access Token for higher rate limits (5000/hour)
   // Get token from: https://github.com/settings/tokens
   private token = ''; // Leave empty for public access or add 'ghp_xxxxx'
-  
+
   private getHeaders(): HttpHeaders {
     let headers = new HttpHeaders();
     if (this.token) {
@@ -68,57 +70,93 @@ export class GitHubService {
     }
     return headers;
   }
-  
+
   // Get user profile
   getUserProfile(username: string): Observable<GitHubUser> {
-    return this.http.get<GitHubUser>(
-      `${this.baseUrl}/users/${username}`,
-      { headers: this.getHeaders() }
-    ).pipe(catchError(this.handleError));
+    return this.http
+      .get<GitHubUser>(`${this.baseUrl}/users/${username}`, {
+        headers: this.getHeaders()
+      })
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          this.errorService.handleHttpError(error, 'GitHub')
+        )
+      );
   }
-  
+
   // Get all user repositories
   getUserRepos(username: string): Observable<GitHubRepo[]> {
-    return this.http.get<GitHubRepo[]>(
-      `${this.baseUrl}/users/${username}/repos?sort=updated&per_page=100`,
-      { headers: this.getHeaders() }
-    ).pipe(catchError(this.handleError));
+    return this.http
+      .get<GitHubRepo[]>(
+        `${this.baseUrl}/users/${username}/repos?sort=updated&per_page=100`,
+        { headers: this.getHeaders() }
+      )
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          this.errorService.handleHttpError(error, 'GitHub')
+        )
+      );
   }
-  
+
   // Get specific repository
   getRepo(username: string, repoName: string): Observable<GitHubRepo> {
-    return this.http.get<GitHubRepo>(
-      `${this.baseUrl}/repos/${username}/${repoName}`,
-      { headers: this.getHeaders() }
-    ).pipe(catchError(this.handleError));
+    return this.http
+      .get<GitHubRepo>(`${this.baseUrl}/repos/${username}/${repoName}`, {
+        headers: this.getHeaders()
+      })
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          this.errorService.handleHttpError(error, 'GitHub')
+        )
+      );
   }
-  
+
   // Get repository languages
-  getRepoLanguages(username: string, repoName: string): Observable<GitHubLanguages> {
-    return this.http.get<GitHubLanguages>(
-      `${this.baseUrl}/repos/${username}/${repoName}/languages`,
-      { headers: this.getHeaders() }
-    ).pipe(catchError(this.handleError));
+  getRepoLanguages(
+    username: string,
+    repoName: string
+  ): Observable<GitHubLanguages> {
+    return this.http
+      .get<GitHubLanguages>(
+        `${this.baseUrl}/repos/${username}/${repoName}/languages`,
+        { headers: this.getHeaders() }
+      )
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          this.errorService.handleHttpError(error, 'GitHub')
+        )
+      );
   }
-  
+
   // Get repository commits
-  getRepoCommits(username: string, repoName: string, perPage: number = 10): Observable<GitHubCommit[]> {
-    return this.http.get<GitHubCommit[]>(
-      `${this.baseUrl}/repos/${username}/${repoName}/commits?per_page=${perPage}`,
-      { headers: this.getHeaders() }
-    ).pipe(catchError(this.handleError));
+  getRepoCommits(
+    username: string,
+    repoName: string,
+    perPage: number = 10
+  ): Observable<GitHubCommit[]> {
+    return this.http
+      .get<GitHubCommit[]>(
+        `${this.baseUrl}/repos/${username}/${repoName}/commits?per_page=${perPage}`,
+        { headers: this.getHeaders() }
+      )
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          this.errorService.handleHttpError(error, 'GitHub')
+        )
+      );
   }
-  
+
   // Search repositories
   searchRepos(query: string): Observable<{ items: GitHubRepo[] }> {
-    return this.http.get<{ items: GitHubRepo[] }>(
-      `${this.baseUrl}/search/repositories?q=${query}&sort=stars&order=desc`,
-      { headers: this.getHeaders() }
-    ).pipe(catchError(this.handleError));
-  }
-  
-  private handleError(error: any) {
-    console.error('GitHub API Error:', error);
-    return throwError(() => new Error(error.message || 'Server error'));
+    return this.http
+      .get<{ items: GitHubRepo[] }>(
+        `${this.baseUrl}/search/repositories?q=${query}&sort=stars&order=desc`,
+        { headers: this.getHeaders() }
+      )
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          this.errorService.handleHttpError(error, 'GitHub')
+        )
+      );
   }
 }

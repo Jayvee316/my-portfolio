@@ -1,11 +1,12 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-about',
   imports: [],
   templateUrl: './about.html',
-  styleUrl: './about.scss'
+  styleUrl: './about.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class About {
   loadingService = inject(LoadingService);

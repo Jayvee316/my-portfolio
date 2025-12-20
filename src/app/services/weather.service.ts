@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, catchError } from 'rxjs';
+import { ErrorService } from './error.service';
 
 export interface WeatherData {
   name: string;
@@ -23,11 +24,16 @@ export interface WeatherData {
 })
 export class WeatherService {
   private http = inject(HttpClient);
+  private errorService = inject(ErrorService);
   private apiKey = 'ce2d183bd2568b07ee1e12e99a0df943';
   private apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
-  
+
   getWeather(city: string): Observable<WeatherData> {
-    const url = `${this.apiUrl}?q=${city}&appid=${this.apiKey}&units=metric`;
-    return this.http.get<WeatherData>(url);
+    const url = `${this.apiUrl}?q=${encodeURIComponent(city)}&appid=${this.apiKey}&units=metric`;
+    return this.http.get<WeatherData>(url).pipe(
+      catchError((error: HttpErrorResponse) =>
+        this.errorService.handleHttpError(error, 'Weather')
+      )
+    );
   }
 }

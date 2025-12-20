@@ -1,19 +1,22 @@
-import { Component, signal, computed, inject, OnInit } from '@angular/core';
+import { Component, signal, computed, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';  // ← ADD THIS
+import { RouterLink } from '@angular/router';
 import { GitHubService, GitHubRepo } from '../../services/github.service';
 import { LoadingService } from '../../services/loading.service';
+import { ErrorService } from '../../services/error.service';
 
 @Component({
   selector: 'app-github-repos',
   imports: [FormsModule, RouterLink],
   templateUrl: './github-repos.html',
-  styleUrl: './github-repos.scss'
+  styleUrl: './github-repos.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GithubRepos implements OnInit {
   private githubService = inject(GitHubService);
   private loadingService = inject(LoadingService);
-  
+  private errorService = inject(ErrorService);
+
   // REPLACE WITH YOUR GITHUB USERNAME
   username = 'Jayvee316';
   
@@ -78,16 +81,15 @@ export class GithubRepos implements OnInit {
   loadRepos() {
     this.loadingService.show();
     this.error.set('');
-    
+
     this.githubService.getUserRepos(this.username).subscribe({
       next: (data) => {
         this.allRepos.set(data);
         this.loadingService.hide();
       },
       error: (err) => {
-        this.error.set('Failed to load repositories');
+        this.error.set(this.errorService.getErrorMessage(err));
         this.loadingService.hide();
-        console.error(err);
       }
     });
   }

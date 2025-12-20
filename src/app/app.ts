@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Header } from './components/header/header';
 import { LoadingSpinner } from './components/loading-spinner/loading-spinner';
@@ -9,7 +9,8 @@ import { LoadingService } from './services/loading.service';
   selector: 'app-root',
   imports: [RouterOutlet, Header, LoadingSpinner, BackToTop],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class App {
   title = 'my-portfolio';

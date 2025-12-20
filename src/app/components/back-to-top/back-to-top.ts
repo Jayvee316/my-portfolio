@@ -1,8 +1,12 @@
-import { Component, signal, HostListener } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-back-to-top',
   imports: [],
+  host: {
+    '(window:scroll)': 'onWindowScroll()'
+  },
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (isVisible()) {
       <button 
@@ -65,8 +69,6 @@ import { Component, signal, HostListener } from '@angular/core';
 export class BackToTop {
   isVisible = signal(false);
   
-  // Listen to window scroll event
-  @HostListener('window:scroll', [])
   onWindowScroll() {
     // Show button after scrolling 300px from top
     const scrollPosition = window.pageYOffset || 

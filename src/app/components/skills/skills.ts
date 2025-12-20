@@ -1,4 +1,4 @@
-import { Component, signal, effect } from '@angular/core';
+import { Component, signal, effect, ChangeDetectionStrategy } from '@angular/core';
 
 interface Skill {
   name: string;
@@ -15,7 +15,8 @@ interface SkillCategory {
   selector: 'app-skills',
   imports: [],
   templateUrl: './skills.html',
-  styleUrl: './skills.scss'
+  styleUrl: './skills.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Skills {
   // Signal to trigger animations

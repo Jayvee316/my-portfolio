@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { LoadingService } from '../../services/loading.service';
 import emailjs from '@emailjs/browser';
@@ -8,7 +8,8 @@ import { environment } from '../../../environments/environment';
   selector: 'app-contact',
   imports: [ReactiveFormsModule],
   templateUrl: './contact.html',
-  styleUrl: './contact.scss'
+  styleUrl: './contact.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Contact {
   loadingService = inject(LoadingService);
