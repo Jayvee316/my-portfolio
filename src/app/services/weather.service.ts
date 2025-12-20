@@ -3,19 +3,34 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, catchError } from 'rxjs';
 import { ErrorService } from './error.service';
 
+/**
+ * WeatherService - OpenWeatherMap API integration
+ *
+ * Fetches current weather data for any city using the OpenWeatherMap API.
+ * Returns temperature (Celsius), humidity, wind speed, and conditions.
+ *
+ * API Key Setup:
+ * 1. Sign up at https://openweathermap.org/api
+ * 2. Get your free API key from the dashboard
+ * 3. Replace the apiKey below or add to environment.ts
+ *
+ * Note: Free tier allows 1,000 calls/day
+ */
+
+/** Weather API response structure */
 export interface WeatherData {
-  name: string;
+  name: string;  // City name
   main: {
-    temp: number;
-    feels_like: number;
-    humidity: number;
+    temp: number;       // Temperature in Celsius (we use units=metric)
+    feels_like: number; // "Feels like" temperature
+    humidity: number;   // Humidity percentage
   };
   weather: Array<{
-    description: string;
-    icon: string;
+    description: string; // e.g., "scattered clouds"
+    icon: string;        // Icon code for weather condition
   }>;
   wind: {
-    speed: number;
+    speed: number;  // Wind speed in m/s
   };
 }
 
@@ -28,6 +43,7 @@ export class WeatherService {
   private apiKey = 'ce2d183bd2568b07ee1e12e99a0df943';
   private apiUrl = 'https://api.openweathermap.org/data/2.5/weather';
 
+  /** Fetches current weather for a city. Uses metric units (Celsius, m/s). */
   getWeather(city: string): Observable<WeatherData> {
     const url = `${this.apiUrl}?q=${encodeURIComponent(city)}&appid=${this.apiKey}&units=metric`;
     return this.http.get<WeatherData>(url).pipe(

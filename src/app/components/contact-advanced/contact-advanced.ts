@@ -5,6 +5,22 @@ import { ErrorService } from '../../services/error.service';
 import emailjs from '@emailjs/browser';
 import { environment } from '../../../environments/environment';
 
+/**
+ * ContactAdvanced - Feature-rich contact form
+ *
+ * Demonstrates:
+ * - Reactive Forms with FormBuilder and Validators
+ * - EmailJS integration for sending emails without a backend
+ * - Form validation with custom error messages
+ * - Loading states during async operations
+ * - LocalStorage for persisting submission statistics
+ *
+ * EmailJS Setup:
+ * 1. Create account at https://www.emailjs.com
+ * 2. Create email service (Gmail, Outlook, etc.)
+ * 3. Create email template with variables
+ * 4. Add credentials to environment.ts
+ */
 @Component({
   selector: 'app-contact-advanced',
   imports: [ReactiveFormsModule],
@@ -17,6 +33,7 @@ export class ContactAdvanced implements OnInit {
   private errorService = inject(ErrorService);
   private fb = inject(FormBuilder);
 
+  // EmailJS configuration - get these from your EmailJS dashboard
   private serviceId = environment.emailjs.serviceId;
   private templateId = environment.emailjs.templateId;
   private publicKey = environment.emailjs.publicKey;

@@ -2,13 +2,35 @@ import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 
+/**
+ * ErrorService - Centralized HTTP error handling
+ *
+ * Converts HTTP errors into user-friendly messages and provides
+ * consistent error handling across all API services.
+ *
+ * Key Features:
+ * - Transforms HTTP status codes into readable messages
+ * - Provides context-specific error messages (GitHub, Weather, etc.)
+ * - Includes type guards for error checking
+ * - Logs errors for debugging while showing friendly messages to users
+ *
+ * Usage in services:
+ *   return this.http.get<Data>(url).pipe(
+ *     catchError((error: HttpErrorResponse) =>
+ *       this.errorService.handleHttpError(error, 'GitHub')
+ *     )
+ *   );
+ */
+
+/** Structure for application errors with both technical and user-friendly messages */
 export interface AppError {
-  message: string;
-  userMessage: string;
-  statusCode?: number;
-  type: ErrorType;
+  message: string;      // Technical error message for logging
+  userMessage: string;  // Friendly message to display to users
+  statusCode?: number;  // HTTP status code if applicable
+  type: ErrorType;      // Categorized error type for handling
 }
 
+/** Error categories for conditional handling in components */
 export enum ErrorType {
   Network = 'NETWORK',
   NotFound = 'NOT_FOUND',

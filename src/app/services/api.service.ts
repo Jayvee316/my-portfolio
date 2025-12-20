@@ -3,6 +3,24 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, map, catchError } from 'rxjs';
 import { ErrorService } from './error.service';
 
+/**
+ * ApiService - Demo REST API integration
+ *
+ * Uses JSONPlaceholder (https://jsonplaceholder.typicode.com) - a free fake
+ * REST API for testing and prototyping. Demonstrates common HTTP operations:
+ * - GET (fetch data)
+ * - POST (create data)
+ * - PUT (update data)
+ * - DELETE (remove data)
+ *
+ * Note: JSONPlaceholder simulates responses but doesn't persist data.
+ * POST/PUT/DELETE return expected responses but don't actually modify server data.
+ *
+ * Usage:
+ *   posts = signal<Post[]>([]);
+ *   this.apiService.getPosts().subscribe(data => this.posts.set(data));
+ */
+
 export interface Post {
   userId: number;
   id: number;
@@ -31,11 +49,8 @@ export interface Todo {
 export class ApiService {
   private http = inject(HttpClient);
   private errorService = inject(ErrorService);
-
-  // JSONPlaceholder API - Free fake REST API for testing
   private baseUrl = 'https://jsonplaceholder.typicode.com';
 
-  // Get all posts
   getPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(`${this.baseUrl}/posts`).pipe(
       catchError((error: HttpErrorResponse) =>
@@ -44,7 +59,6 @@ export class ApiService {
     );
   }
 
-  // Get single post
   getPost(id: number): Observable<Post> {
     return this.http.get<Post>(`${this.baseUrl}/posts/${id}`).pipe(
       catchError((error: HttpErrorResponse) =>
@@ -53,7 +67,6 @@ export class ApiService {
     );
   }
 
-  // Get all users
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.baseUrl}/users`).pipe(
       catchError((error: HttpErrorResponse) =>
@@ -62,17 +75,17 @@ export class ApiService {
     );
   }
 
-  // Get todos
+  /** Returns first 10 todos using RxJS map() to transform the response */
   getTodos(): Observable<Todo[]> {
     return this.http.get<Todo[]>(`${this.baseUrl}/todos`).pipe(
-      map((todos) => todos.slice(0, 10)), // Get only first 10
+      map((todos) => todos.slice(0, 10)),
       catchError((error: HttpErrorResponse) =>
         this.errorService.handleHttpError(error, 'Todo')
       )
     );
   }
 
-  // Create new post (simulated - API returns fake response)
+  /** Simulated POST - returns fake response with generated ID */
   createPost(post: Partial<Post>): Observable<Post> {
     return this.http.post<Post>(`${this.baseUrl}/posts`, post).pipe(
       catchError((error: HttpErrorResponse) =>
@@ -81,7 +94,6 @@ export class ApiService {
     );
   }
 
-  // Update post
   updatePost(id: number, post: Partial<Post>): Observable<Post> {
     return this.http.put<Post>(`${this.baseUrl}/posts/${id}`, post).pipe(
       catchError((error: HttpErrorResponse) =>
@@ -90,7 +102,6 @@ export class ApiService {
     );
   }
 
-  // Delete post
   deletePost(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/posts/${id}`).pipe(
       catchError((error: HttpErrorResponse) =>

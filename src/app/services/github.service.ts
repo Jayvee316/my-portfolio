@@ -3,6 +3,25 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { Observable, catchError } from 'rxjs';
 import { ErrorService } from './error.service';
 
+/**
+ * GitHubService - GitHub REST API integration
+ *
+ * Fetches public GitHub data including user profiles, repositories,
+ * commits, and language statistics using the GitHub REST API v3.
+ *
+ * Rate Limiting:
+ * - Without token: 60 requests/hour (per IP)
+ * - With token: 5,000 requests/hour
+ *
+ * To increase rate limit, add a Personal Access Token:
+ * 1. Go to https://github.com/settings/tokens
+ * 2. Generate a token with 'public_repo' scope
+ * 3. Add it to environment.ts: github: { token: 'ghp_xxx' }
+ *
+ * API Documentation: https://docs.github.com/en/rest
+ */
+
+/** GitHub user profile data structure */
 export interface GitHubUser {
   login: string;
   name: string;
@@ -18,6 +37,7 @@ export interface GitHubUser {
   created_at: string;
 }
 
+/** Repository information from GitHub API */
 export interface GitHubRepo {
   id: number;
   name: string;
@@ -35,6 +55,7 @@ export interface GitHubRepo {
   size: number;
 }
 
+/** Commit data with author and message */
 export interface GitHubCommit {
   sha: string;
   commit: {
@@ -47,6 +68,7 @@ export interface GitHubCommit {
   html_url: string;
 }
 
+/** Language breakdown - key is language name, value is bytes of code */
 export interface GitHubLanguages {
   [key: string]: number;
 }
@@ -59,10 +81,10 @@ export class GitHubService {
   private errorService = inject(ErrorService);
   private baseUrl = 'https://api.github.com';
 
-  // Optional: Add your GitHub Personal Access Token for higher rate limits (5000/hour)
-  // Get token from: https://github.com/settings/tokens
-  private token = ''; // Leave empty for public access or add 'ghp_xxxxx'
+  // Add token here for higher rate limits (see class documentation above)
+  private token = '';
 
+  /** Builds HTTP headers, adding Authorization if token is configured */
   private getHeaders(): HttpHeaders {
     let headers = new HttpHeaders();
     if (this.token) {
@@ -71,7 +93,6 @@ export class GitHubService {
     return headers;
   }
 
-  // Get user profile
   getUserProfile(username: string): Observable<GitHubUser> {
     return this.http
       .get<GitHubUser>(`${this.baseUrl}/users/${username}`, {
@@ -84,7 +105,7 @@ export class GitHubService {
       );
   }
 
-  // Get all user repositories
+  /** Fetches all repos for a user, sorted by most recently updated */
   getUserRepos(username: string): Observable<GitHubRepo[]> {
     return this.http
       .get<GitHubRepo[]>(
@@ -98,7 +119,6 @@ export class GitHubService {
       );
   }
 
-  // Get specific repository
   getRepo(username: string, repoName: string): Observable<GitHubRepo> {
     return this.http
       .get<GitHubRepo>(`${this.baseUrl}/repos/${username}/${repoName}`, {
@@ -111,7 +131,7 @@ export class GitHubService {
       );
   }
 
-  // Get repository languages
+  /** Returns language breakdown with byte counts (e.g., { TypeScript: 15000, HTML: 3000 }) */
   getRepoLanguages(
     username: string,
     repoName: string
@@ -128,7 +148,6 @@ export class GitHubService {
       );
   }
 
-  // Get repository commits
   getRepoCommits(
     username: string,
     repoName: string,
@@ -146,7 +165,7 @@ export class GitHubService {
       );
   }
 
-  // Search repositories
+  /** Search GitHub repositories globally by query string */
   searchRepos(query: string): Observable<{ items: GitHubRepo[] }> {
     return this.http
       .get<{ items: GitHubRepo[] }>(
