@@ -23,7 +23,7 @@
   
   <!-- Results count -->
   <p class="results-info">
-    Showing {{ filteredProjects().length }} of {{ allProjects.length }} projects
+    Showing {{ filteredProjects().length }} of {{ allProjects().length }} projects
   </p>
   
   <!-- Projects Grid -->
@@ -40,7 +40,18 @@
               <span class="tech-badge">{{ tech }}</span>
             }
           </div>
-          
+
+          <!-- Star Rating using model() -->
+          <div class="project-rating">
+            <span class="rating-label">Your Rating:</span>
+            <app-star-rating
+              [rating]="project.rating"
+              (ratingChange)="onRatingChange(project.id, $event)"
+              [maxStars]="5"
+              [showLabel]="true"
+            />
+          </div>
+
           <div class="project-links">
             @if (project.githubLink) {
               <a [href]="project.githubLink" target="_blank" class="btn">
@@ -52,6 +63,10 @@
                 <span>🚀</span> Live Demo
               </a>
             }
+            <!-- Delete button to demo ConfirmDialog -->
+            <button class="btn btn-delete" (click)="onDeleteClick(project)">
+              <span>🗑️</span> Delete
+            </button>
           </div>
         </div>
       }
@@ -65,5 +80,31 @@
         Clear Search
       </button>
     </div>
+  }
+
+  <!--
+    ConfirmDialog using input() and output()
+
+    INPUTS (data flowing IN):
+    - [title] = dialog title
+    - [message] = dialog message
+    - [confirmText] = confirm button text
+    - [cancelText] = cancel button text
+    - [type] = 'default' | 'danger' | 'warning'
+
+    OUTPUTS (events flowing OUT):
+    - (confirmed) = user clicked confirm
+    - (cancelled) = user clicked cancel or backdrop
+  -->
+  @if (showDeleteDialog()) {
+    <app-confirm-dialog
+      [title]="'Delete Project'"
+      [message]="'Are you sure you want to delete \'' + projectToDelete()?.title + '\'? This action cannot be undone.'"
+      [confirmText]="'Delete'"
+      [cancelText]="'Cancel'"
+      [type]="'danger'"
+      (confirmed)="onDeleteConfirmed()"
+      (cancelled)="onDeleteCancelled()"
+    />
   }
 </section>
