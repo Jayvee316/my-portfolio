@@ -2,9 +2,9 @@ import { Component, signal, computed, inject, OnInit, ChangeDetectionStrategy } 
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { GitHubService, GitHubRepo } from '../../services/github.service';
-import { LoadingService } from '../../services/loading.service';
 import { ErrorService } from '../../services/error.service';
 import { TimeAgoPipe, TruncatePipe } from '../../pipes';
+// LoadingService no longer needed - interceptor handles it automatically!
 
 /**
  * GithubRepos - Displays user's GitHub repositories
@@ -24,7 +24,6 @@ import { TimeAgoPipe, TruncatePipe } from '../../pipes';
 })
 export class GithubRepos implements OnInit {
   private githubService = inject(GitHubService);
-  private loadingService = inject(LoadingService);
   private errorService = inject(ErrorService);
 
   // REPLACE WITH YOUR GITHUB USERNAME
@@ -89,17 +88,16 @@ export class GithubRepos implements OnInit {
   }
   
   loadRepos() {
-    this.loadingService.show();
     this.error.set('');
 
+    // No need to manually call loadingService.show()/hide()
+    // The loadingInterceptor handles it automatically for all HTTP requests!
     this.githubService.getUserRepos(this.username).subscribe({
       next: (data) => {
         this.allRepos.set(data);
-        this.loadingService.hide();
       },
       error: (err) => {
         this.error.set(this.errorService.getErrorMessage(err));
-        this.loadingService.hide();
       }
     });
   }

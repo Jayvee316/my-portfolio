@@ -4,15 +4,20 @@ import { Injectable, signal } from '@angular/core';
  * LoadingService - Global loading state management
  *
  * This service provides a centralized way to show/hide loading indicators
- * across the application. Components can inject this service to:
- * - Show a loading spinner during API calls
- * - Disable form submissions while processing
- * - Display loading overlays for async operations
+ * across the application.
  *
- * Usage in components:
- *   loadingService = inject(LoadingService);
- *   this.loadingService.show();  // Before API call
- *   this.loadingService.hide();  // After API call completes
+ * AUTOMATIC (Recommended):
+ * The loadingInterceptor automatically shows/hides the spinner for ALL HTTP
+ * requests. No manual code needed - just make HTTP calls and the spinner appears!
+ *
+ * To skip the spinner for specific requests, add a header:
+ *   this.http.get(url, { headers: { 'X-Skip-Loading': 'true' } })
+ *
+ * MANUAL (For non-HTTP operations):
+ * For operations that don't use HttpClient (localStorage, computations, etc.):
+ *   this.loadingService.show();
+ *   // ... do work ...
+ *   this.loadingService.hide();
  *
  * Usage in templates:
  *   @if (loadingService.isLoading()) { <app-loading-spinner /> }
