@@ -6,14 +6,58 @@
       <li><a routerLink="/projects" routerLinkActive="active">Projects</a></li>
       <li><a routerLink="/skills" routerLinkActive="active">Skills</a></li>
       <li><a routerLink="/blog" routerLinkActive="active">Blog</a></li>
-      <li><a routerLink="/github-profile" routerLinkActive="active">GitHub</a></li>
-      <li><a routerLink="/github-repos" routerLinkActive="active">Repos</a></li>
-      <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
-      <li><a routerLink="/contact-advanced" routerLinkActive="active">Contact (Advanced)</a></li>
-      
+
+      <!-- GitHub Dropdown -->
+      <li class="dropdown" [class.open]="openDropdown() === 'github'">
+        <button
+          class="dropdown-toggle"
+          (click)="toggleDropdown('github', $event)"
+          [attr.aria-expanded]="openDropdown() === 'github'"
+          aria-haspopup="true">
+          GitHub
+          <span class="dropdown-arrow">▼</span>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a routerLink="/github-profile" routerLinkActive="active" (click)="onDropdownLinkClick()">
+              Profile
+            </a>
+          </li>
+          <li>
+            <a routerLink="/github-repos" routerLinkActive="active" (click)="onDropdownLinkClick()">
+              Repositories
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      <!-- Contact Dropdown -->
+      <li class="dropdown" [class.open]="openDropdown() === 'contact'">
+        <button
+          class="dropdown-toggle"
+          (click)="toggleDropdown('contact', $event)"
+          [attr.aria-expanded]="openDropdown() === 'contact'"
+          aria-haspopup="true">
+          Contact
+          <span class="dropdown-arrow">▼</span>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a routerLink="/contact" routerLinkActive="active" (click)="onDropdownLinkClick()">
+              Basic
+            </a>
+          </li>
+          <li>
+            <a routerLink="/contact-advanced" routerLinkActive="active" (click)="onDropdownLinkClick()">
+              Advanced
+            </a>
+          </li>
+        </ul>
+      </li>
+
       <li>
-        <button 
-          class="theme-toggle" 
+        <button
+          class="theme-toggle"
           (click)="themeService.toggleTheme()"
           [attr.aria-label]="themeService.isDarkMode() ? 'Switch to light mode' : 'Switch to dark mode'">
           {{ themeService.isDarkMode() ? '☀️' : '🌙' }}
