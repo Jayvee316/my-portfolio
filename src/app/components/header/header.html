@@ -55,6 +55,13 @@
         </ul>
       </li>
 
+      <!-- Auth Links - Show Login or Dashboard based on auth state -->
+      @if (authService.isLoggedIn()) {
+        <li><a routerLink="/dashboard" routerLinkActive="active">Dashboard</a></li>
+      } @else {
+        <li><a routerLink="/login" routerLinkActive="active">Login</a></li>
+      }
+
       <li>
         <button
           class="theme-toggle"

@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './guards';
 
 /**
  * Application Routes Configuration
@@ -17,6 +18,8 @@ import { Routes } from '@angular/router';
  * - /github-profile - GitHub profile integration
  * - /github-repos  - GitHub repositories list
  * - /repo/:name    - Individual repository details (dynamic route)
+ * - /login         - Demo login page for route guard example
+ * - /dashboard     - Protected page (requires authentication)
  * - /**            - 404 Not Found (wildcard - must be last)
  */
 export const routes: Routes = [
@@ -75,6 +78,21 @@ export const routes: Routes = [
     path: 'repo/:name',
     loadComponent: () =>
       import('./components/repo-detail/repo-detail').then((m) => m.RepoDetail),
+  },
+
+  // Authentication demo pages (Route Guards example)
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./components/login/login').then((m) => m.Login),
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./components/dashboard/dashboard').then((m) => m.Dashboard),
+    // canActivate guard runs before loading this component
+    // If user is not logged in, they'll be redirected to /login
+    canActivate: [authGuard],
   },
 
   // Wildcard route - catches all undefined routes (must be last!)

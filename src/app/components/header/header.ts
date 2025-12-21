@@ -1,6 +1,7 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ThemeService } from '../../services/theme.service';
+import { AuthService } from '../../services/auth.service';
 
 /**
  * Header - Main navigation component
@@ -29,6 +30,7 @@ import { ThemeService } from '../../services/theme.service';
 })
 export class Header {
   themeService = inject(ThemeService);
+  authService = inject(AuthService);
 
   /** Tracks which dropdown is open - 'github', 'contact', or null (none) */
   openDropdown = signal<string | null>(null);
