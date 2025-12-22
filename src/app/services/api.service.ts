@@ -2,19 +2,16 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, map, catchError } from 'rxjs';
 import { ErrorService } from './error.service';
+import { environment } from '../../environments/environment';
 
 /**
- * ApiService - Demo REST API integration
+ * ApiService - REST API integration with backend
  *
- * Uses JSONPlaceholder (https://jsonplaceholder.typicode.com) - a free fake
- * REST API for testing and prototyping. Demonstrates common HTTP operations:
+ * Connects to the ASP.NET Core backend API for:
  * - GET (fetch data)
  * - POST (create data)
  * - PUT (update data)
  * - DELETE (remove data)
- *
- * Note: JSONPlaceholder simulates responses but doesn't persist data.
- * POST/PUT/DELETE return expected responses but don't actually modify server data.
  *
  * Usage:
  *   posts = signal<Post[]>([]);
@@ -32,8 +29,7 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  phone: string;
-  website: string;
+  role: string;
 }
 
 export interface Todo {
@@ -49,7 +45,7 @@ export interface Todo {
 export class ApiService {
   private http = inject(HttpClient);
   private errorService = inject(ErrorService);
-  private baseUrl = 'https://jsonplaceholder.typicode.com';
+  private baseUrl = environment.apiUrl;
 
   getPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(`${this.baseUrl}/posts`).pipe(

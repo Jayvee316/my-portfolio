@@ -1,6 +1,6 @@
 export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:5022/api',  // Backend API URL
+  production: true,
+  apiUrl: 'https://my-portfolio-api-qsac.onrender.com/api',
   emailjs: {
     serviceId: 'service_65d3492',      // Replace with your real Service ID
     templateId: 'template_nxip4kh',    // Replace with your real Template ID

@@ -4,15 +4,20 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 
 /**
- * Login - Demo login page for route guard demonstration
+ * Login - Login page with backend authentication
  *
- * This is a simple demo login that accepts any username/password.
- * In a real app, you would validate credentials against a backend API.
+ * Authenticates users against the ASP.NET Core backend API.
+ * Uses JWT tokens for authentication.
  *
  * Features:
  * - Redirects to returnUrl after successful login (if came from protected route)
  * - Shows error message on failed login
  * - Redirects to dashboard if already logged in
+ *
+ * Test Credentials (seeded in database):
+ * - admin@example.com / admin123 (admin role)
+ * - john@example.com / password123 (user role)
+ * - jane@example.com / password123 (user role)
  */
 @Component({
   selector: 'app-login',
@@ -70,8 +75,9 @@ import { AuthService } from '../../services/auth.service';
           </form>
 
           <div class="demo-note">
-            <p><strong>Demo Mode:</strong> Enter any username and password to login.</p>
-            <p>Try username <code>admin</code> to get admin role.</p>
+            <p><strong>Test Credentials:</strong></p>
+            <p><code>admin@example.com</code> / <code>admin123</code> (admin)</p>
+            <p><code>john@example.com</code> / <code>password123</code> (user)</p>
           </div>
         }
       </div>
@@ -220,6 +226,7 @@ export class Login {
   username = '';
   password = '';
   errorMessage = signal('');
+  isLoading = signal(false);
 
   onLogin() {
     this.errorMessage.set('');
@@ -229,15 +236,24 @@ export class Login {
       return;
     }
 
-    const success = this.authService.login(this.username, this.password);
+    this.isLoading.set(true);
 
-    if (success) {
-      // Check if there's a return URL (came from protected route)
-      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
-      this.router.navigateByUrl(returnUrl);
-    } else {
-      this.errorMessage.set('Login failed. Please try again.');
-    }
+    this.authService.login(this.username, this.password).subscribe({
+      next: (response) => {
+        this.isLoading.set(false);
+        if (response) {
+          // Check if there's a return URL (came from protected route)
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+          this.router.navigateByUrl(returnUrl);
+        } else {
+          this.errorMessage.set('Invalid username or password');
+        }
+      },
+      error: () => {
+        this.isLoading.set(false);
+        this.errorMessage.set('Login failed. Please try again.');
+      }
+    });
   }
 
   goToDashboard() {
